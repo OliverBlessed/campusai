@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Student Registration</h1>
+</header>
+
+<div class="calculator">
+
+    <h2>Create Student Account</h2>
+
+    <input type="text" id="name" placeholder="Full Name">
+
+    <input type="text" id="studentid" placeholder="Student ID">
+
+    <input type="text" id="program" placeholder="Program">
+
+    <input type="email" id="email" placeholder="Email Address">
+
+    <button onclick="registerStudent()">
+        Register
+    </button>
+
+    <h3 id="message"></h3>
+
+</div>
+
+<script>
+
+function registerStudent(){
+
+let name = document.getElementById("name").value;
+
+document.getElementById("message").innerHTML =
+"✅ Registration Successful! Welcome " + name;
+
+}
+
+</script>
+
+</body>
+</html>

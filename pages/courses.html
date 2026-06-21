@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Course Registration</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<header>
+<h1>CampusAI - Courses</h1>
+</header>
+
+<div class="container">
+
+<h2>Register Your Courses</h2>
+
+<input type="text" id="courseInput" placeholder="Enter course name">
+
+<button onclick="addCourse()">Add Course</button>
+<button onclick="clearCourses()">Clear All</button>
+
+<h3>Registered Courses</h3>
+<ul id="courseList"></ul>
+
+<hr>
+
+<h3>AI Video Tutorials</h3>
+
+<input type="text" id="videoSearch" placeholder="Search course (e.g Java)">
+<button onclick="searchVideos()">Search Videos</button>
+
+<div id="videoResults"></div>
+
+</div>
+
+<script>
+
+// =========================
+// GET COURSES
+// =========================
+function getCourses(){
+    return JSON.parse(localStorage.getItem("courses")) || [];
+}
+
+// =========================
+// SAVE COURSES
+// =========================
+function saveCourses(courses){
+    localStorage.setItem("courses", JSON.stringify(courses));
+}
+
+// =========================
+// ADD COURSE
+// =========================
+function addCourse(){
+
+let course = document.getElementById("courseInput").value.trim();
+
+if(course === ""){
+    alert("Please enter a course");
+    return;
+}
+
+let courses = getCourses();
+
+if(courses.includes(course)){
+    alert("Course already exists");
+    return;
+}
+
+courses.push(course);
+saveCourses(courses);
+
+document.getElementById("courseInput").value = "";
+
+displayCourses();
+
+alert("Course added successfully ✔");
+
+}
+
+// =========================
+// DISPLAY COURSES
+// =========================
+function displayCourses(){
+
+let courses = getCourses();
+
+let list = document.getElementById("courseList");
+
+list.innerHTML = "";
+
+if(courses.length === 0){
+    list.innerHTML = "<li>No courses registered yet</li>";
+    return;
+}
+
+courses.forEach(course => {
+    let li = document.createElement("li");
+    li.textContent = course;
+    list.appendChild(li);
+});
+
+}
+
+// =========================
+// CLEAR COURSES
+// =========================
+function clearCourses(){
+localStorage.removeItem("courses");
+displayCourses();
+}
+
+// =========================
+// AI VIDEO SEARCH
+// =========================
+function searchVideos(){
+
+let query = document.getElementById("videoSearch").value.trim();
+
+if(query === ""){
+    alert("Enter a course name");
+    return;
+}
+
+let videoDiv = document.getElementById("videoResults");
+
+videoDiv.innerHTML = `
+<h4>Top Tutorials for "${query}"</h4>
+
+<iframe width="100%" height="300"
+src="https://www.youtube.com/embed?listType=search&list=${query}"
+allowfullscreen>
+</iframe>
+`;
+
+}
+
+// =========================
+// LOAD ON START
+// =========================
+window.onload = displayCourses;
+
+</script>
+
+</body>
+</html>

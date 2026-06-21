@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Study Assistant</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header>
+<h1>AI Study Assistant</h1>
+</header>
+
+<div class="calculator">
+
+<h2>Search Course Tutorial</h2>
+
+<input type="text" id="courseSearch" placeholder="e.g. Web Design">
+
+<button onclick="searchCourse()">Search</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function searchCourse(){
+
+let course = document.getElementById("courseSearch").value.toLowerCase();
+
+let result = document.getElementById("result");
+
+// simple AI mapping
+let links = {
+"web design": "https://www.youtube.com/results?search_query=web+design+tutorial",
+"programming": "https://www.youtube.com/results?search_query=programming+for+beginners",
+"database": "https://www.youtube.com/results?search_query=database+systems+tutorial",
+"networking": "https://www.youtube.com/results?search_query=computer+networking+basics"
+};
+
+if(links[course]){
+result.innerHTML = `
+<h3>Recommended Videos:</h3>
+<a href="${links[course]}" target="_blank">
+Watch Tutorial for ${course}
+</a>
+`;
+}else{
+result.innerHTML = "No tutorial found. Try Web Design, Programming, Database, Networking.";
+}
+
+}
+
+</script>
+
+</body>
+</html>

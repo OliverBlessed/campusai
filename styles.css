@@ -1,0 +1,399 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f7fc;
+}
+
+header{
+    background:#0d6efd;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+.hero{
+    text-align:center;
+    padding:100px 20px;
+}
+
+.hero h2{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    margin-bottom:20px;
+}
+
+button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.features{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:50px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    width:250px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    .login-container{
+    width:400px;
+    margin:100px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.login-container h1,
+.login-container h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+}
+body{
+    background: lightblue;
+}
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    padding:40px;
+}
+
+.dashboard-card{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    text-align:center;
+}
+.calculator{
+    width:500px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.calculator h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.calculator h3{
+    text-align:center;
+    margin-top:20px;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusAI Dashboard</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<header>
+<h1>CampusAI Smart Dashboard</h1>
+</header>
+
+<h2 id="welcome"></h2>
+
+<div class="dashboard">
+
+<!-- COURSES -->
+<div class="card">
+<h3>My Courses</h3>
+<ul id="courseDisplay"></ul>
+</div>
+
+<!-- STUDY PLAN -->
+<div class="card">
+<h3>AI Study Plan</h3>
+<button onclick="generatePlan()">Generate Plan</button>
+<div id="plan"></div>
+</div>
+
+<!-- AI VIDEO -->
+<div class="card">
+<h3>AI Video Help</h3>
+<input type="text" id="videoSearch" placeholder="Search course videos">
+<button onclick="searchVideos()">Search</button>
+<div id="videoResults"></div>
+</div>
+
+</div>
+
+<script>
+
+// =====================
+// USER NAME
+// =====================
+let user = localStorage.getItem("currentUser");
+
+if(!user || user === "null"){
+    user = "Student";
+}
+
+document.getElementById("welcome").innerText =
+"Welcome, " + user;
+
+// =====================
+// LOAD COURSES
+// =====================
+function getCourses(){
+    return JSON.parse(localStorage.getItem("courses")) || [];
+}
+
+function loadCourses(){
+
+let courses = getCourses();
+
+let list = document.getElementById("courseDisplay");
+
+list.innerHTML = "";
+
+if(courses.length === 0){
+    list.innerHTML = "<li>No courses registered yet</li>";
+    return;
+}
+
+courses.forEach(c => {
+    let li = document.createElement("li");
+    li.textContent = c;
+    list.appendChild(li);
+});
+
+}
+
+// =====================
+// AI STUDY PLAN
+// =====================
+function generatePlan(){
+
+let courses = getCourses();
+
+let planDiv = document.getElementById("plan");
+
+if(courses.length === 0){
+    planDiv.innerHTML = "No courses found";
+    return;
+}
+
+let days = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+
+let html = "";
+
+courses.forEach((course, i)=>{
+    html += `<p><b>${days[i % days.length]}:</b> Study ${course} - 2 hours</p>`;
+});
+
+planDiv.innerHTML = html;
+
+}
+
+// =====================
+// AI VIDEO SEARCH
+// =====================
+function searchVideos(){
+
+let query = document.getElementById("videoSearch").value.trim();
+
+if(query === ""){
+    alert("Enter a course name");
+    return;
+}
+
+document.getElementById("videoResults").innerHTML = `
+<h4>${query} Tutorials</h4>
+
+<iframe width="100%" height="250"
+src="https://www.youtube.com/embed?listType=search&list=${query}">
+</iframe>
+`;
+
+}
+
+// =====================
+// LOAD PAGE
+// =====================
+window.onload = loadCourses;
+
+</script>
+
+</body>
+</html>
+/* =========================
+   WOW ANIMATIONS
+========================= */
+
+/* Page fade-in */
+body{
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform: translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform: translateY(0);
+    }
+}
+
+/* Card hover animation */
+.card{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Button animation */
+button{
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+
+/* List animation */
+li{
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn{
+    from{
+        opacity:0;
+        transform: translateX(-10px);
+    }
+    to{
+        opacity:1;
+        transform: translateX(0);
+    }
+}
+
+/* Header glow effect */
+header h1{
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{
+        text-shadow: 0 0 5px rgba(13,110,253,0.3);
+    }
+    to{
+        text-shadow: 0 0 15px rgba(13,110,253,0.7);
+    }
+}
+
+/* Progress bar animation */
+.progress-bar{
+    animation: growBar 1s ease-in-out;
+}
+
+@keyframes growBar{
+    from{
+        width:0%;
+    }
+}
+/* =======================
+   FINAL POLISH STYLES
+======================= */
+
+#loader{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#0d6efd;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    animation: fadeOut 1s ease 2s forwards;
+}
+
+#loader h1{
+    font-size:40px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        visibility:hidden;
+    }
+}
+
+/* DARK MODE */
+body.dark{
+    background:#121212;
+    color:white;
+}
+
+body.dark .card{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark button{
+    background:#333;
+}
+
+/* ANIMATION TOUCH */
+.card{
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}

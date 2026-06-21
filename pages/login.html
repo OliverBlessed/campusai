@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header>
+<h1>CampusAI Login</h1>
+</header>
+
+<div class="calculator">
+
+<h2>Student Login</h2>
+
+<input type="text" id="username" placeholder="Enter Your Name">
+
+<button onclick="login()">Login</button>
+
+<h3 id="msg"></h3>
+
+</div>
+
+<script>
+
+function login(){
+
+let name = document.getElementById("username").value;
+
+if(name === ""){
+alert("Enter your name");
+return;
+}
+
+// save user session
+localStorage.setItem("currentUser", name);
+
+document.getElementById("msg").innerHTML =
+"Welcome " + name + "! Redirecting...";
+
+setTimeout(()=>{
+window.location.href = "dashboard.html";
+}, 1500);
+
+}
+
+</script>
+
+</body>
+</html>

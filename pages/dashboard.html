@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusAI Dashboard</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+    <h1>CampusAI</h1>
+    <p>Loading Smart Learning System...</p>
+</div>
+
+<header>
+<h1>CampusAI Smart Dashboard</h1>
+
+<!-- DARK MODE BUTTON -->
+<button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+
+</header>
+
+<h2 id="welcome"></h2>
+
+<div class="dashboard">
+
+<!-- COURSES -->
+<div class="card">
+<h3>My Courses</h3>
+<ul id="courseDisplay"></ul>
+</div>
+
+<!-- STUDY PLAN -->
+<div class="card">
+<h3>AI Study Plan</h3>
+<button onclick="generatePlan()">Generate Plan</button>
+<div id="plan"></div>
+</div>
+
+<!-- VIDEO -->
+<div class="card">
+<h3>AI Video Help</h3>
+<input type="text" id="videoSearch" placeholder="Search course videos">
+<button onclick="searchVideos()">Search</button>
+<div id="videoResults"></div>
+</div>
+
+</div>
+
+<script>
+
+// ================= USER =================
+let user = localStorage.getItem("currentUser") || "Student";
+
+document.getElementById("welcome").innerText =
+"Welcome, " + user;
+
+// ================= COURSES =================
+function getCourses(){
+    return JSON.parse(localStorage.getItem("courses")) || [];
+}
+
+function loadCourses(){
+
+let courses = getCourses();
+let list = document.getElementById("courseDisplay");
+
+list.innerHTML = "";
+
+if(courses.length === 0){
+    list.innerHTML = "<li>No courses registered yet</li>";
+    return;
+}
+
+courses.forEach(c=>{
+    let li = document.createElement("li");
+    li.textContent = c;
+    list.appendChild(li);
+});
+
+}
+
+// ================= STUDY PLAN =================
+function generatePlan(){
+
+let courses = getCourses();
+
+let planDiv = document.getElementById("plan");
+
+if(courses.length === 0){
+    planDiv.innerHTML = "No courses found";
+    return;
+}
+
+let days = ["Mon","Tue","Wed","Thu","Fri"];
+
+let html = "";
+let progress = 0;
+
+courses.forEach((course,i)=>{
+    html += `<p><b>${days[i % days.length]}:</b> Study ${course} - 2 hours</p>`;
+    progress += (100 / courses.length);
+});
+
+html += `
+<div class="progress-container">
+<div class="progress-bar" style="width:${Math.min(progress,100)}%"></div>
+</div>
+<p>Study Progress: ${Math.min(progress,100)}%</p>
+`;
+
+planDiv.innerHTML = html;
+
+}
+
+// ================= VIDEO =================
+function searchVideos(){
+
+let query = document.getElementById("videoSearch").value.trim();
+
+if(query === ""){
+    alert("Enter a course name");
+    return;
+}
+
+document.getElementById("videoResults").innerHTML = `
+<h4>${query} Tutorials</h4>
+<iframe width="100%" height="250"
+src="https://www.youtube.com/embed?listType=search&list=${query}">
+</iframe>
+`;
+
+}
+
+// ================= DARK MODE =================
+function toggleDarkMode(){
+    document.body.classList.toggle("dark");
+}
+
+// ================= LOAD =================
+window.onload = function(){
+
+loadCourses();
+
+setTimeout(()=>{
+    let loader = document.getElementById("loader");
+    if(loader){
+        loader.style.display = "none";
+    }
+}, 2000);
+
+};
+
+</script>
+
+</body>
+</html>
